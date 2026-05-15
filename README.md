@@ -16,7 +16,12 @@ Animated **now playing** SVG widget for your GitHub profile README. Shows the cu
 ### 1. Spotify Developer App
 
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and create an app.
-2. Add redirect URI: `http://127.0.0.1:8888/callback`
+2. Add redirect URI (**must match exactly**, including trailing slash):
+
+   ```
+   https://js-spotify-sound-card.vercel.app/
+   ```
+
 3. Copy **Client ID** and **Client Secret**.
 
 ### 2. Environment variables
@@ -27,13 +32,13 @@ cp .env.example .env.local
 
 Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
 
-### 3. Get refresh token
+### 3. Get refresh token (via Vercel)
 
-```bash
-npm run get-token
-```
+1. Deploy the app and set `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` on Vercel.
+2. Open **[https://js-spotify-sound-card.vercel.app/api/spotify/login](https://js-spotify-sound-card.vercel.app/api/spotify/login)** and approve access.
+3. You are redirected to the homepage with your `SPOTIFY_REFRESH_TOKEN` — add it to Vercel env vars and redeploy.
 
-Open the printed URL, approve access, then paste the printed `SPOTIFY_REFRESH_TOKEN` into `.env.local`.
+**Local alternative:** `npm run get-token` (uses `http://localhost:8888/callback` — add that URI to Spotify Dashboard too).
 
 ### 4. Run locally
 
