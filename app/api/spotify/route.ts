@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server"
 import type { CurrentlyPlaying } from "@/lib/spotify"
 import { generateSVG } from "@/lib/svg-card"
+import { NextResponse } from "next/server"
 
 const SVG_HEADERS = {
   "Content-Type": "image/svg+xml",
@@ -24,7 +24,7 @@ async function getAccessToken(): Promise<string | null> {
   const clientId = process.env.SPOTIFY_CLIENT_ID
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN
-
+  console.log('logggggingggng ', clientId, clientSecret, refreshToken)
   if (!clientId || !clientSecret || !refreshToken || refreshToken === "your_refresh_token") {
     return null
   }

@@ -44,9 +44,40 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) for a live preview.
 
+## Deploy to Vercel (GitHub Actions)
+
+Pushes to `main` deploy production via [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml).
+
+### One-time setup
+
+1. **Create a Vercel project** (import this repo in the [Vercel dashboard](https://vercel.com/new) or run `npx vercel link` locally).
+
+2. **Add Spotify env vars** in Vercel → Project → Settings → Environment Variables (Production):
+   - `SPOTIFY_CLIENT_ID`
+   - `SPOTIFY_CLIENT_SECRET`
+   - `SPOTIFY_REFRESH_TOKEN`
+
+3. **Create a Vercel token** at [vercel.com/account/tokens](https://vercel.com/account/tokens).
+
+4. **Get org & project IDs** after linking:
+   ```bash
+   npx vercel link
+   cat .vercel/project.json
+   ```
+
+5. **Add GitHub repository secrets** (Settings → Secrets and variables → Actions):
+
+   | Secret | Value |
+   |--------|-------|
+   | `VERCEL_TOKEN` | Vercel access token |
+   | `VERCEL_ORG_ID` | `orgId` from `.vercel/project.json` |
+   | `VERCEL_PROJECT_ID` | `projectId` from `.vercel/project.json` |
+
+6. Push to `main` — or run the workflow manually from the **Actions** tab (`workflow_dispatch`).
+
 ## GitHub README embed
 
-Deploy to [Vercel](https://vercel.com) (or any host that supports Next.js), then add to your profile README:
+After deploy, add to your profile README:
 
 ```markdown
 ![Spotify Now Playing](https://your-app.vercel.app/api/spotify)
