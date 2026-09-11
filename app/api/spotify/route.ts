@@ -13,13 +13,13 @@ export const dynamic = "force-dynamic"
  */
 const SVG_HEADERS = {
   "Content-Type": "image/svg+xml",
-  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Cache-Control": "no-cache",
   "Vercel-CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=15",
 } as const
 
 const OFFLINE_HEADERS = {
   "Content-Type": "image/svg+xml",
-  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Cache-Control": "no-cache",
   "Vercel-CDN-Cache-Control": "public, s-maxage=15, stale-while-revalidate=5",
 } as const
 
