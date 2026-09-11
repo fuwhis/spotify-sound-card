@@ -3,7 +3,7 @@ export const SPOTIFY_SCOPES = [
   "user-read-playback-state",
 ] as const
 
-const DEFAULT_REDIRECT_URI = "https://js-spotify-sound-card.vercel.app/"
+const DEFAULT_REDIRECT_URI = "https://spotify-sound-card.vercel.app/"
 
 export function getSpotifyRedirectUri(): string {
   return process.env.SPOTIFY_REDIRECT_URI?.trim() || DEFAULT_REDIRECT_URI

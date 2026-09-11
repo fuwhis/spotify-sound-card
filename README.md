@@ -19,7 +19,7 @@ Animated **now playing** SVG widget for your GitHub profile README. Shows the cu
 2. Add redirect URI (**must match exactly**, including trailing slash):
 
    ```
-   https://js-spotify-sound-card.vercel.app/
+   https://spotify-sound-card.vercel.app/
    ```
 
 3. Copy **Client ID** and **Client Secret**.
@@ -35,16 +35,16 @@ Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
 ### 3. Get refresh token (via Vercel)
 
 1. Deploy the app and set `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` on Vercel.
-2. Open **[https://js-spotify-sound-card.vercel.app/api/spotify/login](https://js-spotify-sound-card.vercel.app/api/spotify/login)** and approve access.
+2. Open **[https://spotify-sound-card.vercel.app/api/spotify/login](https://spotify-sound-card.vercel.app/api/spotify/login)** and approve access.
 3. You are redirected to the homepage with your `SPOTIFY_REFRESH_TOKEN` — add it to Vercel env vars and redeploy.
 
-**Local alternative:** `npm run get-token` (uses `http://localhost:8888/callback` — add that URI to Spotify Dashboard too).
+**Local alternative:** `pnpm get-token` (uses `http://localhost:8888/callback` — add that URI to Spotify Dashboard too).
 
 ### 4. Run locally
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) for a live preview.
@@ -55,7 +55,7 @@ Pushes to `main` deploy production via [`.github/workflows/deploy-production.yml
 
 ### One-time setup
 
-1. **Create a Vercel project** (import this repo in the [Vercel dashboard](https://vercel.com/new) or run `npx vercel link` locally).
+1. **Create a Vercel project** (import this repo in the [Vercel dashboard](https://vercel.com/new) or run `pnpm dlx vercel link` locally).
 
 2. **Add Spotify env vars** in Vercel → Project → Settings → Environment Variables (Production):
    - `SPOTIFY_CLIENT_ID`
@@ -66,7 +66,7 @@ Pushes to `main` deploy production via [`.github/workflows/deploy-production.yml
 
 4. **Get org & project IDs** after linking:
    ```bash
-   npx vercel link
+   pnpm dlx vercel link
    cat .vercel/project.json
    ```
 

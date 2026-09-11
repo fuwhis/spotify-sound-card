@@ -97,7 +97,7 @@ console.log("1. Open this URL in your browser:\n")
 console.log(authUrl.toString())
 console.log("\n2. Approve access — browser redirects to localhost and this script prints your refresh token.")
 console.log("\nIf the browser cannot connect after login, copy the ?code=... value from the address bar and run:")
-console.log("  npm run get-token -- --code=PASTE_CODE_HERE\n")
+console.log("  pnpm get-token -- --code=PASTE_CODE_HERE\n")
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", `http://${req.headers.host}`)
@@ -126,7 +126,7 @@ const server = createServer(async (req, res) => {
         "Authorization failed",
         `<p>${detail}</p>
          <p>Check Redirect URI in Spotify Dashboard:<br><code>${REDIRECT_URI}</code></p>
-         <p>Then run <code>npm run get-token</code> again.</p>`,
+         <p>Then run <code>pnpm get-token</code> again.</p>`,
       ),
     )
     console.error("\nAuthorization failed:", detail)

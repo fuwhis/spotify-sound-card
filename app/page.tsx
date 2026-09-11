@@ -56,7 +56,7 @@ export default async function Home({ searchParams }: PageProps) {
     }
   }
 
-  const embedMarkdown = `![Spotify Now Playing](https://js-spotify-sound-card.vercel.app/api/spotify)`
+  const embedMarkdown = `![Spotify Now Playing](https://spotify-sound-card.vercel.app/api/spotify)`
 
   return (
     <div className='min-h-full bg-[#0a0a0a] text-zinc-100'>

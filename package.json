@@ -1,7 +1,8 @@
 {
-  "name": "spotify-readme",
+  "name": "spotify-sound-card",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.34.3+sha512.f2c531b08829d7be7f03c90addc266615f9c5477463e4bf1d275cb263ce9ea57cf0d5599110d94649a9bb3fed9f0b5efcea74a7016b61532a24cb9ad87860c1d",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -23,5 +24,8 @@
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "unrs-resolver"]
   }
 }

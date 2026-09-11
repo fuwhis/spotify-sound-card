@@ -39,17 +39,22 @@ jobs:
           fi
           echo "Vercel secrets are present."
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: pnpm add --global vercel@latest
 
       # CLI reads VERCEL_TOKEN / VERCEL_ORG_ID / VERCEL_PROJECT_ID from env.
       # Do not pass --token=... — an empty secret becomes "--token=" and fails obscurely.
