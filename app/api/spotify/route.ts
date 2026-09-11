@@ -2,14 +2,25 @@ import type { CurrentlyPlaying } from "@/lib/spotify"
 import { generateSVG } from "@/lib/svg-card"
 import { NextResponse } from "next/server"
 
+// Always render fresh from Spotify; do not statically cache this route.
+export const dynamic = "force-dynamic"
+
+/**
+ * GitHub Camo (and browsers) honor Cache-Control.
+ * Vercel strips s-maxage / stale-while-revalidate from Cache-Control before
+ * forwarding to clients — so Offline SVGs were stuck as `public` with no TTL.
+ * Keep Camo at max-age=0; soft-cache only on Vercel's own CDN.
+ */
 const SVG_HEADERS = {
   "Content-Type": "image/svg+xml",
-  "Cache-Control": "public, s-maxage=30, stale-while-revalidate=15",
+  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Vercel-CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=15",
 } as const
 
 const OFFLINE_HEADERS = {
   "Content-Type": "image/svg+xml",
-  "Cache-Control": "public, s-maxage=60",
+  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Vercel-CDN-Cache-Control": "public, s-maxage=15, stale-while-revalidate=5",
 } as const
 
 function offlineSVG() {
@@ -24,7 +35,7 @@ async function getAccessToken(): Promise<string | null> {
   const clientId = process.env.SPOTIFY_CLIENT_ID
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN
-  console.log('logggggingggng ', clientId, clientSecret, refreshToken)
+
   if (!clientId || !clientSecret || !refreshToken || refreshToken === "your_refresh_token") {
     return null
   }

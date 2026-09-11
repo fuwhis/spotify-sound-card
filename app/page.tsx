@@ -126,8 +126,8 @@ export default async function Home({ searchParams }: PageProps) {
           />
         </div>
         <p className="mt-2 text-xs text-zinc-600">
-          Refreshes every ~30s via cache headers. Play something on Spotify to see
-          the waveform.
+          Edge soft-caches ~30s; GitHub Camo revalidates immediately (max-age=0).
+          Play something on Spotify to see the waveform.
         </p>
       </section>
 
