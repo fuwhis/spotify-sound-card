@@ -1,118 +1,177 @@
 # Spotify Sound Card
 
-Animated **now playing** SVG widget for your GitHub profile README. Shows the current track, album art, and equalizer bars when music is playing.
+<p align="center">
+  <strong>Live “now playing” SVG for your GitHub profile</strong><br/>
+  Track · artist · album art · animated equalizer — zero JavaScript on the client.
+</p>
 
-![Preview](https://img.shields.io/badge/endpoint-SVG%20card-1DB954)
+<p align="center">
+  <a href="https://spotify-sound-card.vercel.app/api/spotify">
+    <img
+      src="https://spotify-sound-card.vercel.app/api/spotify"
+      alt="Spotify Now Playing"
+      width="500"
+    />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://spotify-sound-card.vercel.app"><img src="https://img.shields.io/badge/Live-Demo-1DB954?style=for-the-badge&logo=vercel&logoColor=white" alt="Live demo" /></a>
+  <a href="https://github.com/fuwhis/spotify-sound-card/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/fuwhis/spotify-sound-card/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT" /></a>
+</p>
+
+---
+
+## Drop into your profile README
+
+```markdown
+![Spotify Now Playing](https://spotify-sound-card.vercel.app/api/spotify)
+```
+
+That’s it — GitHub’s image proxy fetches a fresh SVG whenever the README is viewed.
+
+> Deploy your own fork if you want a private card tied to *your* Spotify account (see [Setup](#setup)).
+
+---
+
+## Why this exists
+
+GitHub READMEs are static Markdown. This project turns Spotify’s currently-playing API into a **self-contained SVG** so your profile stays dynamic without embeds, iframes, or client-side scripts.
+
+| Playing | Paused / idle |
+|--------|----------------|
+| Album cover + title + artist | Same layout |
+| Green equalizer bars animate | “Currently paused” / Offline state |
+| Cover inlined as base64 (Camo-safe) | No external image hops |
+
+**Stack:** Next.js · Spotify Web API · Vercel · pure SVG.
+
+---
 
 ## Features
 
-- Real-time track title, artist, and album cover
-- Animated green equalizer bars while playing
-- Base64-embedded cover art (works with GitHub's image proxy)
-- 30s CDN cache to limit Spotify API usage
+- **Real-time now playing** — title, artist, album art from Spotify
+- **Animated equalizer** — CSS keyframes inside the SVG while music is playing
+- **GitHub-friendly** — base64 cover + `Cache-Control: no-cache` for Camo; soft CDN cache on Vercel (~30s) to spare the Spotify API
+- **Offline-aware** — clear Offline / setup states when nothing is playing or credentials are missing
+- **One-click OAuth path** — `/api/spotify/login` after deploy, or local `pnpm get-token`
 
-## Quick start
+---
 
-### 1. Spotify Developer App
+## Live endpoints
 
-1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and create an app.
-2. Add redirect URI (**must match exactly**, including trailing slash):
+| Path | What you get |
+|------|----------------|
+| [`GET /api/spotify`](https://spotify-sound-card.vercel.app/api/spotify) | `image/svg+xml` now-playing card |
+| [`GET /api/spotify/login`](https://spotify-sound-card.vercel.app/api/spotify/login) | Spotify OAuth → prints refresh token |
+| [Homepage](https://spotify-sound-card.vercel.app) | Preview + setup guide |
+
+---
+
+## Setup
+
+### 1. Spotify app
+
+1. Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
+2. Add redirect URI (**exact match**, including trailing slash):
 
    ```
    https://spotify-sound-card.vercel.app/
    ```
 
+   For local token helper, also add `http://localhost:8888/callback`.
+
 3. Copy **Client ID** and **Client Secret**.
 
-### 2. Environment variables
+### 2. Environment
 
 ```bash
 cp .env.example .env.local
 ```
 
-Fill in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
+| Variable | Required | Notes |
+|----------|----------|--------|
+| `SPOTIFY_CLIENT_ID` | yes | From Spotify Dashboard |
+| `SPOTIFY_CLIENT_SECRET` | yes | From Spotify Dashboard |
+| `SPOTIFY_REFRESH_TOKEN` | yes | From OAuth step below |
+| `SPOTIFY_REDIRECT_URI` | optional | Defaults to production URL |
 
-### 3. Get refresh token (via Vercel)
+### 3. Refresh token
 
-1. Deploy the app and set `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` on Vercel.
-2. Open **[https://spotify-sound-card.vercel.app/api/spotify/login](https://spotify-sound-card.vercel.app/api/spotify/login)** and approve access.
-3. You are redirected to the homepage with your `SPOTIFY_REFRESH_TOKEN` — add it to Vercel env vars and redeploy.
+**Production (recommended)**
 
-**Local alternative:** `pnpm get-token` (uses `http://localhost:8888/callback` — add that URI to Spotify Dashboard too).
+1. Deploy and set `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` on Vercel.
+2. Open [/api/spotify/login](https://spotify-sound-card.vercel.app/api/spotify/login) and approve access.
+3. Copy `SPOTIFY_REFRESH_TOKEN` from the homepage → add to Vercel → redeploy.
 
-### 4. Run locally
+**Local**
+
+```bash
+pnpm get-token
+```
+
+### 4. Develop locally
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) for a live preview.
+Open [http://localhost:3000](http://localhost:3000) for the live preview.
 
-## Deploy to Vercel (GitHub Actions)
+---
 
-Pushes to `main` deploy production via [`.github/workflows/deploy-production.yml`](.github/workflows/deploy-production.yml).
+## Deploy
 
-### One-time setup
+### Vercel + GitHub Actions
 
-1. **Create a Vercel project** (import this repo in the [Vercel dashboard](https://vercel.com/new) or run `pnpm dlx vercel link` locally).
+Production deploys on push to `main` via [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (`vercel pull` → `build` → `deploy --prebuilt`).
 
-2. **Add Spotify env vars** in Vercel → Project → Settings → Environment Variables (Production):
-   - `SPOTIFY_CLIENT_ID`
-   - `SPOTIFY_CLIENT_SECRET`
-   - `SPOTIFY_REFRESH_TOKEN`
+**One-time**
 
-3. **Create a Vercel token** at [vercel.com/account/tokens](https://vercel.com/account/tokens).
+1. Create / link a Vercel project (`pnpm dlx vercel link`).
+2. Set Spotify env vars on Vercel (Production).
+3. Create a [Vercel token](https://vercel.com/account/tokens).
+4. Add GitHub Actions secrets:
 
-4. **Get org & project IDs** after linking:
-   ```bash
-   pnpm dlx vercel link
-   cat .vercel/project.json
-   ```
+   | Secret | Source |
+   |--------|--------|
+   | `VERCEL_TOKEN` | Vercel account token |
+   | `VERCEL_ORG_ID` | `.vercel/project.json` → `orgId` |
+   | `VERCEL_PROJECT_ID` | `.vercel/project.json` → `projectId` |
 
-5. **Add GitHub repository secrets** (Settings → Secrets and variables → Actions):
+5. Push to `main`, or run the workflow from the **Actions** tab.
 
-   | Secret | Value |
-   |--------|-------|
-   | `VERCEL_TOKEN` | Vercel access token |
-   | `VERCEL_ORG_ID` | `orgId` from `.vercel/project.json` |
-   | `VERCEL_PROJECT_ID` | `projectId` from `.vercel/project.json` |
+If Vercel Git Integration is also enabled, disable one of the two deploy paths to avoid double builds.
 
-6. Push to `main` — or run the workflow manually from the **Actions** tab (`workflow_dispatch`).
+---
 
-## GitHub README embed
-
-After deploy, add to your profile README:
-
-```markdown
-![Spotify Now Playing](https://your-app.vercel.app/api/spotify)
-```
-
-## API
-
-| Endpoint        | Returns                          |
-|-----------------|----------------------------------|
-| `GET /api/spotify` | `image/svg+xml` now-playing card |
-
-## Project structure
+## Project layout
 
 ```
 app/
-  api/spotify/route.ts   # Spotify API + SVG generation
-  page.tsx               # Local preview + setup guide
+  api/spotify/route.ts     # Now-playing → SVG
+  api/spotify/login/       # OAuth entry
+  page.tsx                 # Preview + setup UI
 lib/
-  spotify.ts             # Types + XML helpers
-  svg-card.ts            # SVG template
+  svg-card.ts              # SVG template + equalizer
+  spotify.ts               # Types / XML helpers
+  spotify-auth.ts          # Auth helpers
 scripts/
-  get-refresh-token.mjs  # OAuth helper for refresh token
+  get-refresh-token.mjs    # Local OAuth helper
 ```
+
+---
 
 ## Notes
 
-- Spotify must be actively playing on a device linked to your account.
-- If nothing is playing, the card shows an "Offline" state.
-- GitHub README images are cached; updates may lag by ~30–60 seconds.
+- Spotify must be actively playing on a device linked to your account for the “playing” state.
+- GitHub Camo may still lag a bit between refreshes; the API itself is dynamic.
+- Fork & deploy your own instance for a personal card — don’t share your refresh token.
+
+---
 
 ## License
 
-MIT
+[MIT](LICENSE)
