@@ -10,7 +10,7 @@ import { escapeXml, truncate } from "./spotify"
 const BAR_COUNT = 40
 const availableWidth = 340 // 500 - 140 - 20
 const step = availableWidth / BAR_COUNT // 8.5
-const barWidth = 5 // hoặc ~65% của step
+const barWidth = 5 // setup ~65% of step
 
 export function generateSVG(
   title: string,
