@@ -16,9 +16,15 @@
 </p>
 
 <p align="center">
-  <a href="https://spotify-sound-card.vercel.app"><img src="https://img.shields.io/badge/Live-Demo-1DB954?style=for-the-badge&logo=vercel&logoColor=white" alt="Live demo" /></a>
-  <a href="https://github.com/fuwhis/spotify-sound-card/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/fuwhis/spotify-sound-card/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT" /></a>
+  <a href="https://spotify-sound-card.vercel.app">
+    <img src="https://img.shields.io/badge/Live-Demo-1DB954?style=for-the-badge&logo=vercel&logoColor=white" alt="Live demo" />
+  </a>
+  <a href="https://github.com/fuwhis/spotify-sound-card/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/fuwhis/spotify-sound-card/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT" />
+  </a>
 </p>
 
 ---
@@ -31,7 +37,7 @@
 
 That’s it — GitHub’s image proxy fetches a fresh SVG whenever the README is viewed.
 
-> Deploy your own fork if you want a private card tied to *your* Spotify account (see [Setup](#setup)).
+> Deploy your own fork if you want a private card tied to _your_ Spotify account (see [Setup](#setup)).
 
 ---
 
@@ -39,11 +45,11 @@ That’s it — GitHub’s image proxy fetches a fresh SVG whenever the README i
 
 GitHub READMEs are static Markdown. This project turns Spotify’s currently-playing API into a **self-contained SVG** so your profile stays dynamic without embeds, iframes, or client-side scripts.
 
-| Playing | Paused / idle |
-|--------|----------------|
-| Album cover + title + artist | Same layout |
-| Green equalizer bars animate | “Currently paused” / Offline state |
-| Cover inlined as base64 (Camo-safe) | No external image hops |
+| Playing                             | Paused / idle                      |
+| ----------------------------------- | ---------------------------------- |
+| Album cover + title + artist        | Same layout                        |
+| Green equalizer bars animate        | “Currently paused” / Offline state |
+| Cover inlined as base64 (Camo-safe) | No external image hops             |
 
 **Stack:** Next.js · Spotify Web API · Vercel · pure SVG.
 
@@ -61,11 +67,11 @@ GitHub READMEs are static Markdown. This project turns Spotify’s currently-pla
 
 ## Live endpoints
 
-| Path | What you get |
-|------|----------------|
-| [`GET /api/spotify`](https://spotify-sound-card.vercel.app/api/spotify) | `image/svg+xml` now-playing card |
+| Path                                                                                | What you get                         |
+| ----------------------------------------------------------------------------------- | ------------------------------------ |
+| [`GET /api/spotify`](https://spotify-sound-card.vercel.app/api/spotify)             | `image/svg+xml` now-playing card     |
 | [`GET /api/spotify/login`](https://spotify-sound-card.vercel.app/api/spotify/login) | Spotify OAuth → prints refresh token |
-| [Homepage](https://spotify-sound-card.vercel.app) | Preview + setup guide |
+| [Homepage](https://spotify-sound-card.vercel.app)                                   | Preview + setup guide                |
 
 ---
 
@@ -90,12 +96,12 @@ GitHub READMEs are static Markdown. This project turns Spotify’s currently-pla
 cp .env.example .env.local
 ```
 
-| Variable | Required | Notes |
-|----------|----------|--------|
-| `SPOTIFY_CLIENT_ID` | yes | From Spotify Dashboard |
-| `SPOTIFY_CLIENT_SECRET` | yes | From Spotify Dashboard |
-| `SPOTIFY_REFRESH_TOKEN` | yes | From OAuth step below |
-| `SPOTIFY_REDIRECT_URI` | optional | Defaults to production URL |
+| Variable                | Required | Notes                      |
+| ----------------------- | -------- | -------------------------- |
+| `SPOTIFY_CLIENT_ID`     | yes      | From Spotify Dashboard     |
+| `SPOTIFY_CLIENT_SECRET` | yes      | From Spotify Dashboard     |
+| `SPOTIFY_REFRESH_TOKEN` | yes      | From OAuth step below      |
+| `SPOTIFY_REDIRECT_URI`  | optional | Defaults to production URL |
 
 ### 3. Refresh token
 
@@ -135,10 +141,10 @@ Production deploys on push to `main` via [`.github/workflows/ci.yml`](.github/wo
 3. Create a [Vercel token](https://vercel.com/account/tokens).
 4. Add GitHub Actions secrets:
 
-   | Secret | Source |
-   |--------|--------|
-   | `VERCEL_TOKEN` | Vercel account token |
-   | `VERCEL_ORG_ID` | `.vercel/project.json` → `orgId` |
+   | Secret              | Source                               |
+   | ------------------- | ------------------------------------ |
+   | `VERCEL_TOKEN`      | Vercel account token                 |
+   | `VERCEL_ORG_ID`     | `.vercel/project.json` → `orgId`     |
    | `VERCEL_PROJECT_ID` | `.vercel/project.json` → `projectId` |
 
 5. Push to `main`, or run the workflow from the **Actions** tab.

@@ -1,4 +1,16 @@
+/**
+ * Builds the now-playing card as an SVG image string for `/api/spotify`.
+ *
+ * SVG = Scalable Vector Graphics — an XML image format browsers and GitHub
+ * Camo can display via `<img>`, including CSS-animated equalizer bars.
+ * This module is not a React UI; it returns `image/svg+xml` markup.
+ */
 import { escapeXml, truncate } from "./spotify"
+
+const BAR_COUNT = 40
+const availableWidth = 340 // 500 - 140 - 20
+const step = availableWidth / BAR_COUNT // 8.5
+const barWidth = 5 // hoặc ~65% của step
 
 export function generateSVG(
   title: string,
@@ -13,7 +25,7 @@ export function generateSVG(
     .map((_, i) => {
       const animationDuration = (Math.random() * 0.7 + 0.5).toFixed(2)
       const height = Math.floor(Math.random() * 15) + 5
-      return `<rect class="bar" x="${i * 6}" y="${25 - height}" width="4" height="${height}" style="animation-duration: ${animationDuration}s;" />`
+      return `<rect class="bar" x="${i * step}" y="${barWidth}" width="4" height="${height}" style="animation-duration: ${animationDuration}s;" />`
     })
     .join("")
 
