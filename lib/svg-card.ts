@@ -55,8 +55,8 @@ export function generateSVG(
   return `<svg width="500" height="140" xmlns="http://www.w3.org/2000/svg">
   <style>
     .card { fill: #1a1a1a; }
-    .text-title { font: bold 22px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
-    .text-artist { font: 16px 'Segoe UI', Arial, sans-serif; fill: #b3b3b3; }
+    .text-title { font: bold 22px 'SF Pro Text', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
+    .text-artist { font: 16px 'SF Pro Text', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; fill: #b3b3b3; }
     .bar { transform-origin: bottom; animation: bounce ease-in-out infinite alternate; }
     @keyframes bounce {
       0% { transform: scaleY(0.3); }
