@@ -10,7 +10,21 @@ import { escapeXml, truncate } from "./spotify"
 const BAR_COUNT = 40
 const availableWidth = 340 // 500 - 140 - 20
 const step = availableWidth / BAR_COUNT // 8.5
-const barWidth = 5 // setup ~65% of step
+const BAR_WIDTH = 4
+const BAR_RADIUS = BAR_WIDTH / 2 // fully rounded capsule ends
+const PALETTE = [
+  "#6a994e", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6",
+  "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226",
+] as const
+
+function shuffle<T>(items: readonly T[]): T[] {
+  const arr = [...items]
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+      ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
 
 export function generateSVG(
   title: string,
@@ -21,11 +35,16 @@ export function generateSVG(
   const safeTitle = escapeXml(truncate(title, 32))
   const safeArtist = escapeXml(truncate(artist, 40))
 
-  const bars = Array.from({ length: 40 })
+  // Balanced: each palette color appears equally often, then shuffled
+  const barColors = shuffle(
+    Array.from({ length: BAR_COUNT }, (_, i) => PALETTE[i % PALETTE.length])
+  )
+
+  const bars = Array.from({ length: BAR_COUNT })
     .map((_, i) => {
       const animationDuration = (Math.random() * 0.7 + 0.5).toFixed(2)
       const height = Math.floor(Math.random() * 15) + 5
-      return `<rect class="bar" x="${i * step}" y="${barWidth}" width="4" height="${height}" style="animation-duration: ${animationDuration}s;" />`
+      return `<rect class="bar" x="${i * step}" y="${BAR_RADIUS}" width="${BAR_WIDTH}" height="${height}" rx="${BAR_RADIUS}" ry="${BAR_RADIUS}" style="animation-duration: ${animationDuration}s; fill: ${barColors[i]};" />`
     })
     .join("")
 
@@ -38,7 +57,7 @@ export function generateSVG(
     .card { fill: #1a1a1a; }
     .text-title { font: bold 22px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }
     .text-artist { font: 16px 'Segoe UI', Arial, sans-serif; fill: #b3b3b3; }
-    .bar { fill: #1DB954; transform-origin: bottom; animation: bounce ease-in-out infinite alternate; }
+    .bar { transform-origin: bottom; animation: bounce ease-in-out infinite alternate; }
     @keyframes bounce {
       0% { transform: scaleY(0.3); }
       100% { transform: scaleY(1); }
